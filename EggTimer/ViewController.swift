@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         let hardness = sender.currentTitle!
         topTextArea.text = hardness
         
-        totalTime = eggTimes[hardness]!
+        totalTime = eggTimes[hardness]! * 60
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
@@ -47,6 +47,10 @@ class ViewController: UIViewController {
     
     func playSound(soundName: String) {
         let url = Bundle.main.url(forResource: soundName, withExtension: "mp3")
+        do { try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        } catch let error {
+            print(error.localizedDescription)
+        }
         player = try! AVAudioPlayer(contentsOf: url!)
         player.play()
     }
